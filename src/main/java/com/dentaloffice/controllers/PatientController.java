@@ -5,6 +5,7 @@ import com.dentaloffice.services.PatientService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -22,7 +23,7 @@ public class PatientController {
     }
 
     @PostMapping
-    public Patient savePatient(@RequestBody Patient patient) {
+    public Patient savePatient(@Valid @RequestBody Patient patient) {
         return patientService.savePatient(patient);
     }
 }
