@@ -26,4 +26,19 @@ public class PatientController {
     public Patient savePatient(@Valid @RequestBody Patient patient) {
         return patientService.savePatient(patient);
     }
+
+    @DeleteMapping("{id}")
+    public void delete(@PathVariable Long id) {
+        patientService.delete(id);
+    }
+
+    @GetMapping("{id}")
+    public Patient getPatient(@PathVariable Long id) {
+        return patientService.getPatient(id);
+    }
+
+    @PutMapping("{id}")
+    public Patient editPatient(@PathVariable Long id, @Valid @RequestBody Patient patient) {
+        return patientService.edit(id, patient);
+    }
 }

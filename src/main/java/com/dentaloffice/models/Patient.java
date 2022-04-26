@@ -1,5 +1,6 @@
 package com.dentaloffice.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Data
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Patient {
 
     @Id
