@@ -6,15 +6,15 @@ import java.util.List;
 
 public interface PatientService {
 
-    Patient savePatient(Patient patient);
+    Patient save(Patient patient);
 
-    List<Patient> findAllPatients();
-
-    Patient findPatientById(Long id);
+    List<Patient> findAll();
 
     void delete(Long id);
 
-    Patient edit (Long id, Patient editedPatient);
+    Patient edit(Patient editedPatient);
 
-    Patient getPatient(Long id);
+    Patient get(Long id);
+
+    boolean exists(Long id);
 }
