@@ -8,6 +8,8 @@ public interface PatientService {
 
     Patient save(Patient patient);
 
+    List<Patient> findAll(String filter);
+
     List<Patient> findAll();
 
     void delete(Long id);

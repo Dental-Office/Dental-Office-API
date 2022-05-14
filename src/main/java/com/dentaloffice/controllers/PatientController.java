@@ -21,8 +21,12 @@ public class PatientController {
     private final PatientService patientService;
 
     @GetMapping
-    public List<Patient> findAll() {
-        return patientService.findAll();
+    public List<Patient> findAll(@RequestParam(name="searchTerm", required = false) String searchTerm) {
+        if (searchTerm != null && !searchTerm.isBlank()) {
+            return patientService.findAll(searchTerm);
+        } else {
+            return patientService.findAll();
+        }
     }
 
     @PostMapping

@@ -3,9 +3,7 @@ package com.dentaloffice.services;
 import com.dentaloffice.models.Patient;
 import com.dentaloffice.repositories.PatientRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -18,6 +16,11 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public Patient save(Patient patient) {
         return patientRepository.save(patient);
+    }
+
+    @Override
+    public List<Patient> findAll(String filter) {
+        return patientRepository.findByFiltering(filter, filter, filter, filter);
     }
 
     @Override
