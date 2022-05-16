@@ -8,7 +8,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Data
-public class PatientDTO {
+public class PatientRequestDTO {
 
     @NotNull(message = "First name can not be null!")
     @Size(min=2, max= 25, message = "First name must be grater than 1 character and not grater than 25 characters!")

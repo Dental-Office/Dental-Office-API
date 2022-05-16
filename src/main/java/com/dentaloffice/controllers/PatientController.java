@@ -1,6 +1,7 @@
 package com.dentaloffice.controllers;
 
-import com.dentaloffice.dto.PatientDTO;
+import com.dentaloffice.dto.PatientRequestDTO;
+import com.dentaloffice.dto.PatientsResponseDTO;
 import com.dentaloffice.models.Patient;
 import com.dentaloffice.services.PatientService;
 import lombok.AllArgsConstructor;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -21,16 +21,18 @@ public class PatientController {
     private final PatientService patientService;
 
     @GetMapping
-    public List<Patient> findAll(@RequestParam(name="searchTerm", required = false) String searchTerm) {
-        if (searchTerm != null && !searchTerm.isBlank()) {
-            return patientService.findAll(searchTerm);
+    public PatientsResponseDTO findAll(@RequestParam(name="searchTerm", required = false) String searchTerm,
+                                       @RequestParam(defaultValue = "0") Integer pageNo,
+                                       @RequestParam(defaultValue = "10") Integer pageSize) {
+        if (searchTerm != null || !searchTerm.isBlank()) {
+            return patientService.findAll(searchTerm, pageNo, pageSize);
         } else {
             return patientService.findAll();
         }
     }
 
     @PostMapping
-    public Patient save(@Valid @RequestBody PatientDTO patient) {
+    public Patient save(@Valid @RequestBody PatientRequestDTO patient) {
         Patient patientToBeSaved = new Patient();
         patientToBeSaved.setFirstName(patient.getFirstName());
         patientToBeSaved.setLastName(patient.getLastName());
@@ -53,7 +55,7 @@ public class PatientController {
     }
 
     @PutMapping("{id}")
-    public Patient edit(@PathVariable Long id, @Valid @RequestBody PatientDTO patient) {
+    public Patient edit(@PathVariable Long id, @Valid @RequestBody PatientRequestDTO patient) {
         Patient patientToBeSaved = new Patient();
         patientToBeSaved.setId(id);
         patientToBeSaved.setFirstName(patient.getFirstName());

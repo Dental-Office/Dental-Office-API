@@ -1,16 +1,15 @@
 package com.dentaloffice.services;
 
+import com.dentaloffice.dto.PatientsResponseDTO;
 import com.dentaloffice.models.Patient;
-
-import java.util.List;
 
 public interface PatientService {
 
     Patient save(Patient patient);
 
-    List<Patient> findAll(String filter);
+    PatientsResponseDTO findAll(String filter, Integer pageNo, Integer pageSize);
 
-    List<Patient> findAll();
+    PatientsResponseDTO findAll();
 
     void delete(Long id);
 
