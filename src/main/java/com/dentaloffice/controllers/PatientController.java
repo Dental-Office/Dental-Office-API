@@ -23,9 +23,10 @@ public class PatientController {
     @GetMapping
     public PatientsResponseDTO findAll(@RequestParam(name="searchTerm", required = false) String searchTerm,
                                        @RequestParam(defaultValue = "0") Integer pageNo,
-                                       @RequestParam(defaultValue = "10") Integer pageSize) {
+                                       @RequestParam(defaultValue = "10") Integer pageSize,
+                                       @RequestParam(name = "sort", defaultValue = "id", required = false) String sort) {
         if (searchTerm != null || !searchTerm.isBlank()) {
-            return patientService.findAll(searchTerm, pageNo, pageSize);
+            return patientService.findAll(searchTerm, pageNo, pageSize, sort);
         } else {
             return patientService.findAll();
         }

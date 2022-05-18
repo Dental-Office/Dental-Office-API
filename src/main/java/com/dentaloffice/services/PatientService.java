@@ -7,7 +7,7 @@ public interface PatientService {
 
     Patient save(Patient patient);
 
-    PatientsResponseDTO findAll(String filter, Integer pageNo, Integer pageSize);
+    PatientsResponseDTO findAll(String filter, Integer pageNo, Integer pageSize, String sortKey);
 
     PatientsResponseDTO findAll();
 

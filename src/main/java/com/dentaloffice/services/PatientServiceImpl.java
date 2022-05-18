@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,11 +22,11 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public PatientsResponseDTO findAll(String filter, Integer pageNo, Integer pageSize) {
+    public PatientsResponseDTO findAll(String filter, Integer pageNo, Integer pageSize, String sort) {
 
-        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sort).ascending());
 
-        Page<Patient> pagedResult = patientRepository.findByFiltering(filter, filter, filter, filter, pageable);
+        Page<Patient> pagedResult = patientRepository.findByFiltering(filter, filter, filter, filter,  pageable);
 
         PatientsResponseDTO response = new PatientsResponseDTO();
         response.setContent(pagedResult.getContent());
