@@ -6,10 +6,12 @@ import com.dentaloffice.models.Patient;
 import com.dentaloffice.services.PatientService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+import java.util.UUID;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -24,12 +26,8 @@ public class PatientController {
     public PatientsResponseDTO findAll(@RequestParam(name="searchTerm", required = false) String searchTerm,
                                        @RequestParam(defaultValue = "0") Integer pageNo,
                                        @RequestParam(defaultValue = "10") Integer pageSize,
-                                       @RequestParam(name = "sort", defaultValue = "id", required = false) String sort) {
-        if (searchTerm != null || !searchTerm.isBlank()) {
-            return patientService.findAll(searchTerm, pageNo, pageSize, sort);
-        } else {
-            return patientService.findAll();
-        }
+                                       @RequestParam(name = "sort", defaultValue = "firstName", required = false) String sort) {
+        return patientService.findAll(searchTerm, pageNo, pageSize, sort);
     }
 
     @PostMapping
@@ -37,13 +35,13 @@ public class PatientController {
         Patient patientToBeSaved = new Patient();
         patientToBeSaved.setFirstName(patient.getFirstName());
         patientToBeSaved.setLastName(patient.getLastName());
-        patientToBeSaved.setDateOfBirth(patient.getDateOfBirth());
+        patientToBeSaved.setBirthDate(patient.getBirthDate());
         patientToBeSaved.setPhoneNumber(patient.getPhoneNumber());
         return patientService.save(patientToBeSaved);
     }
 
     @DeleteMapping("{id}")
-    public void delete(@PathVariable Long id) {
+    public void delete(@PathVariable UUID id) {
         if (!patientService.exists(id)) {
             throwNotFoundException(id);
         }
@@ -51,17 +49,17 @@ public class PatientController {
     }
 
     @GetMapping("{id}")
-    public Patient get(@PathVariable Long id) {
+    public Patient get(@PathVariable UUID id) {
         return patientService.get(id);
     }
 
     @PutMapping("{id}")
-    public Patient edit(@PathVariable Long id, @Valid @RequestBody PatientRequestDTO patient) {
+    public Patient edit(@PathVariable UUID id, @Valid @RequestBody PatientRequestDTO patient) {
         Patient patientToBeSaved = new Patient();
         patientToBeSaved.setId(id);
         patientToBeSaved.setFirstName(patient.getFirstName());
         patientToBeSaved.setLastName(patient.getLastName());
-        patientToBeSaved.setDateOfBirth(patient.getDateOfBirth());
+        patientToBeSaved.setBirthDate(patient.getBirthDate());
         patientToBeSaved.setPhoneNumber(patient.getPhoneNumber());
 
         if (!patientService.exists(id)) {
@@ -71,7 +69,7 @@ public class PatientController {
         return patientService.edit(patientToBeSaved);
     }
 
-    private void throwNotFoundException(Long id) {
+    private void throwNotFoundException(UUID id) {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No data with id " + id + " exist");
     }
 }

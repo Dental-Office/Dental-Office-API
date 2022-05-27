@@ -19,8 +19,8 @@ public class PatientRequestDTO {
     @Pattern(regexp = "^[a-zA-Z]*", message = "Last name can not be a number!")
     private String lastName;
 
-    @NotNull(message = "Date of birth can not be null!")
-    private String dateOfBirth;
+    @NotNull(message = "Birth date can not be null!")
+    private String birthDate;
 
     @NotBlank(message = "Phone number can not be null!")
     @Pattern(regexp = "[0-9]{11,15}", message = "Phone number can not be a character and must be grater than 10 or less than 15 numbers!")

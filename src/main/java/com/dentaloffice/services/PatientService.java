@@ -3,6 +3,8 @@ package com.dentaloffice.services;
 import com.dentaloffice.dto.PatientsResponseDTO;
 import com.dentaloffice.models.Patient;
 
+import java.util.UUID;
+
 public interface PatientService {
 
     Patient save(Patient patient);
@@ -11,11 +13,11 @@ public interface PatientService {
 
     PatientsResponseDTO findAll();
 
-    void delete(Long id);
+    void delete(UUID id);
 
     Patient edit(Patient editedPatient);
 
-    Patient get(Long id);
+    Patient get(UUID id);
 
-    boolean exists(Long id);
+    boolean exists(UUID id);
 }
