@@ -1,6 +1,5 @@
 package com.dentaloffice.services.impl;
 
-import com.dentaloffice.dto.PatientsResponseDTO;
 import com.dentaloffice.models.Patient;
 import com.dentaloffice.repositories.PatientRepository;
 import com.dentaloffice.services.PatientService;
@@ -25,26 +24,11 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public PatientsResponseDTO findAll(String filter, Integer pageNo, Integer pageSize, String sort) {
+    public Page<Patient> findAll(String filter, Integer pageNo, Integer pageSize, String sort) {
 
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sort).ascending());
 
-        Page<Patient> pagedResult = patientRepository.findByFiltering(filter, filter, filter, filter,  pageable);
-
-        PatientsResponseDTO response = new PatientsResponseDTO();
-        response.setContent(pagedResult.getContent());
-        response.setTotalPages(pagedResult.getTotalPages());
-
-        return response;
-    }
-
-    @Override
-    public PatientsResponseDTO findAll(){
-        PatientsResponseDTO response = new PatientsResponseDTO();
-
-        response.setContent(patientRepository.findAll());
-
-        return response;
+        return patientRepository.findByFiltering(filter, filter, filter, filter, pageable);
     }
 
     public boolean exists(UUID id){

@@ -1,7 +1,7 @@
 package com.dentaloffice.services;
 
-import com.dentaloffice.dto.AppointmentResponseDTO;
 import com.dentaloffice.models.Appointment;
+import org.springframework.data.domain.Page;
 
 import java.util.UUID;
 
@@ -9,9 +9,7 @@ public interface AppointmentService {
 
     Appointment save(Appointment appointment);
 
-    AppointmentResponseDTO findAll(String searchTerm, Integer pageNo, Integer pageSize, String sort);
-
-    AppointmentResponseDTO findAll();
+    Page<Appointment> findAll(String searchTerm, Integer pageNo, Integer pageSize, String sort);
 
     boolean exists(UUID id);
 

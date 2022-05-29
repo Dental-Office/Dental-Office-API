@@ -1,7 +1,7 @@
 package com.dentaloffice.services;
 
-import com.dentaloffice.dto.PatientsResponseDTO;
 import com.dentaloffice.models.Patient;
+import org.springframework.data.domain.Page;
 
 import java.util.UUID;
 
@@ -9,9 +9,7 @@ public interface PatientService {
 
     Patient save(Patient patient);
 
-    PatientsResponseDTO findAll(String filter, Integer pageNo, Integer pageSize, String sortKey);
-
-    PatientsResponseDTO findAll();
+    Page<Patient> findAll(String filter, Integer pageNo, Integer pageSize, String sortKey);
 
     void delete(UUID id);
 

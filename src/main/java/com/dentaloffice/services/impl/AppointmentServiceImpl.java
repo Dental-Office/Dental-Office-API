@@ -1,6 +1,5 @@
 package com.dentaloffice.services.impl;
 
-import com.dentaloffice.dto.AppointmentResponseDTO;
 import com.dentaloffice.models.Appointment;
 import com.dentaloffice.repositories.AppointmentRepository;
 import com.dentaloffice.services.AppointmentService;
@@ -24,28 +23,12 @@ public class AppointmentServiceImpl implements AppointmentService {
         return appointmentRepository.save(appointment);
     }
 
-
     @Override
-    public AppointmentResponseDTO findAll(String filter, Integer pageNo, Integer pageSize, String sort) {
+    public Page<Appointment> findAll(String filter, Integer pageNo, Integer pageSize, String sort) {
 
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sort).ascending());
 
-        Page<Appointment> pagedResult = appointmentRepository.findByFiltering(filter, filter, filter,  pageable);
-
-        AppointmentResponseDTO response = new AppointmentResponseDTO();
-        response.setContent(pagedResult.getContent());
-        response.setTotalPages(pagedResult.getTotalPages());
-
-        return response;
-    }
-
-    @Override
-    public AppointmentResponseDTO findAll(){
-        AppointmentResponseDTO response = new AppointmentResponseDTO();
-
-        response.setContent(appointmentRepository.findAll());
-
-        return response;
+        return appointmentRepository.findByFiltering(filter, filter, filter,  pageable);
     }
 
     public boolean exists(UUID id){

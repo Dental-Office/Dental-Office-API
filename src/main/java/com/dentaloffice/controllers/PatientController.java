@@ -5,8 +5,8 @@ import com.dentaloffice.dto.PatientsResponseDTO;
 import com.dentaloffice.models.Patient;
 import com.dentaloffice.services.PatientService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -23,11 +23,17 @@ public class PatientController {
     private final PatientService patientService;
 
     @GetMapping
-    public PatientsResponseDTO findAll(@RequestParam(name="searchTerm", required = false) String searchTerm,
+    public PatientsResponseDTO findAll(@RequestParam(name = "searchTerm", required = false) String searchTerm,
                                        @RequestParam(defaultValue = "0") Integer pageNo,
                                        @RequestParam(defaultValue = "10") Integer pageSize,
                                        @RequestParam(name = "sort", defaultValue = "firstName", required = false) String sort) {
-        return patientService.findAll(searchTerm, pageNo, pageSize, sort);
+        Page<Patient> pagedResult = patientService.findAll(searchTerm, pageNo, pageSize, sort);
+
+        PatientsResponseDTO response = new PatientsResponseDTO();
+        response.setContent(pagedResult.getContent());
+        response.setTotalPages(pagedResult.getTotalPages());
+
+        return response;
     }
 
     @PostMapping

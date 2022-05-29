@@ -6,6 +6,7 @@ import com.dentaloffice.models.Appointment;
 import com.dentaloffice.models.Patient;
 import com.dentaloffice.services.AppointmentService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -38,7 +39,13 @@ public class AppointmentControler {
                                           @RequestParam(defaultValue = "0") Integer pageNo,
                                           @RequestParam(defaultValue = "10") Integer pageSize,
                                           @RequestParam(name = "sort", defaultValue = "date", required = false) String sort) {
-        return appointmentService.findAll(searchTerm, pageNo, pageSize, sort);
+        Page<Appointment> pagedResult = appointmentService.findAll(searchTerm, pageNo, pageSize, sort);
+
+        AppointmentResponseDTO response = new AppointmentResponseDTO();
+        response.setContent(pagedResult.getContent());
+        response.setTotalPages(pagedResult.getTotalPages());
+
+        return response;
     }
 
     @DeleteMapping("{id}")
