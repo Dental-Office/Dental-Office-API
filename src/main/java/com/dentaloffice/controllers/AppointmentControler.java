@@ -3,6 +3,7 @@ package com.dentaloffice.controllers;
 import com.dentaloffice.dto.AppointmentRequestDTO;
 import com.dentaloffice.dto.AppointmentResponseDTO;
 import com.dentaloffice.models.Appointment;
+import com.dentaloffice.models.Patient;
 import com.dentaloffice.services.AppointmentService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,9 @@ public class AppointmentControler {
     @PostMapping
     public Appointment save(@Valid @RequestBody AppointmentRequestDTO appointment) {
         Appointment appointmentToBeSaved = new Appointment();
-        appointmentToBeSaved.setPatientId(appointment.getPatientId());
+        Patient patient = new Patient();
+        patient.setId(appointment.getPatientId());
+        appointmentToBeSaved.setPatient(patient);
         appointmentToBeSaved.setDate(appointment.getDate());
         appointmentToBeSaved.setTime(appointment.getTime());
         return appointmentService.save(appointmentToBeSaved);
@@ -51,19 +54,21 @@ public class AppointmentControler {
         return appointmentService.get(id);
     }
 
-    @PutMapping("{id}")
-    public Appointment edit(@PathVariable UUID id, @Valid @RequestBody AppointmentRequestDTO appointment) {
-        Appointment appointmentToBeSaved = new Appointment();
-        appointmentToBeSaved.setPatientId(appointment.getPatientId());
-        appointmentToBeSaved.setDate(appointment.getDate());
-        appointmentToBeSaved.setTime(appointment.getTime());
-
-        if (!appointmentService.exists(id)) {
-            throwNotFoundException(id);
-        }
-
-        return appointmentService.edit(appointmentToBeSaved);
-    }
+//    @PutMapping("{id}")
+//    public Appointment edit(@PathVariable UUID id, @Valid @RequestBody AppointmentRequestDTO appointment) {
+//        Appointment appointmentToBeSaved = new Appointment();
+//        Patient patient = new Patient();
+//        patient.setId(appointment.getPatientId());
+//        appointmentToBeSaved.setPatient(patient);
+//        appointmentToBeSaved.setDate(appointment.getDate());
+//        appointmentToBeSaved.setTime(appointment.getTime());
+//
+//        if (!appointmentService.exists(id)) {
+//            throwNotFoundException(id);
+//        }
+//
+//        return appointmentService.edit(appointmentToBeSaved);
+//    }
 
     private void throwNotFoundException(UUID id) {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No data with id " + id + " exist");
