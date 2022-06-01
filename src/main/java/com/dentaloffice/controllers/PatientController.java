@@ -5,6 +5,7 @@ import com.dentaloffice.dto.PatientsResponseDTO;
 import com.dentaloffice.models.Patient;
 import com.dentaloffice.services.PatientService;
 import lombok.AllArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -51,7 +52,12 @@ public class PatientController {
         if (!patientService.exists(id)) {
             throwNotFoundException(id);
         }
-        patientService.delete(id);
+
+        try {
+            patientService.delete(id);
+        } catch (DataIntegrityViolationException exception) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        }
     }
 
     @GetMapping("{id}")
@@ -77,5 +83,9 @@ public class PatientController {
 
     private void throwNotFoundException(UUID id) {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No data with id " + id + " exist");
+    }
+
+    private void throwConflictException(UUID id) {
+        throw new ResponseStatusException(HttpStatus.CONFLICT, "Testing");
     }
 }
