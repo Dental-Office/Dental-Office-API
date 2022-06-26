@@ -15,6 +15,6 @@ public class MaterialRequestDTO {
     private String materialName;
 
     @NotNull(message = "Quantity can not be null!")
-    @Pattern(regexp = "[0-9]", message = "Quantity can not be a letter!")
+//    @Pattern(regexp = "[0-9] {2,5}", message = "Quantity can not be a character and must be grater than 1 or less than 5 numbers!")
     private String quantity;
 }

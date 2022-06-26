@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping(PatientController.BASE_URL)
+@RequestMapping(MaterialController.BASE_URL)
 @AllArgsConstructor
 public class MaterialController {
 
