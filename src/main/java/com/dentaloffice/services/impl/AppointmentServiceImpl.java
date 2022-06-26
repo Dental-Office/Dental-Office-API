@@ -1,6 +1,7 @@
 package com.dentaloffice.services.impl;
 
 import com.dentaloffice.models.Appointment;
+import com.dentaloffice.models.Patient;
 import com.dentaloffice.repositories.AppointmentRepository;
 import com.dentaloffice.services.AppointmentService;
 import lombok.AllArgsConstructor;
@@ -47,7 +48,8 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public Appointment edit(Appointment appointmentToBeSaved) {
-        return null;
+    public Appointment edit(Appointment editedAppointment) {
+        return appointmentRepository.save(editedAppointment);
     }
+
 }

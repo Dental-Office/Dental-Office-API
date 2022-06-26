@@ -61,21 +61,21 @@ public class AppointmentControler {
         return appointmentService.get(id);
     }
 
-//    @PutMapping("{id}")
-//    public Appointment edit(@PathVariable UUID id, @Valid @RequestBody AppointmentRequestDTO appointment) {
-//        Appointment appointmentToBeSaved = new Appointment();
-//        Patient patient = new Patient();
-//        patient.setId(appointment.getPatientId());
-//        appointmentToBeSaved.setPatient(patient);
-//        appointmentToBeSaved.setDate(appointment.getDate());
-//        appointmentToBeSaved.setTime(appointment.getTime());
-//
-//        if (!appointmentService.exists(id)) {
-//            throwNotFoundException(id);
-//        }
-//
-//        return appointmentService.edit(appointmentToBeSaved);
-//    }
+    @PutMapping("{id}")
+    public Appointment edit(@PathVariable UUID id, @Valid @RequestBody AppointmentRequestDTO appointment) {
+        Appointment appointmentToBeSaved = new Appointment();
+        Patient patient = new Patient();
+        patient.setId(appointment.getPatientId());
+        appointmentToBeSaved.setPatient(patient);
+        appointmentToBeSaved.setDate(appointment.getDate());
+        appointmentToBeSaved.setTime(appointment.getTime());
+
+        if (!appointmentService.exists(id)) {
+            throwNotFoundException(id);
+        }
+
+        return appointmentService.edit(appointmentToBeSaved);
+    }
 
     private void throwNotFoundException(UUID id) {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No data with id " + id + " exist");

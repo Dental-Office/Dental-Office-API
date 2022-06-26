@@ -17,5 +17,5 @@ public interface AppointmentService {
 
     Appointment get(UUID id);
 
-    Appointment edit(Appointment appointmentToBeSaved);
+    Appointment edit(Appointment editedAppointment);
 }

@@ -1,7 +1,6 @@
 package com.dentaloffice.services;
 
 import com.dentaloffice.models.Patient;
-import org.postgresql.util.PSQLException;
 import org.springframework.data.domain.Page;
 
 import java.util.UUID;
