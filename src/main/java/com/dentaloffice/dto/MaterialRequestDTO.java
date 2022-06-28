@@ -17,6 +17,5 @@ public class MaterialRequestDTO {
 
     @NotBlank(message = "Quantity can not be null!")
     @Pattern(regexp = "[0-9]{1,5}", message = "Phone number can not be a character and must be grater than 1 or less than 5 numbers!")
-//    @Pattern(regexp = "[0-9]", message = "Quantity can not be a character and must be grater than 1 or less than 5 numbers!")
     private String quantity;
 }
