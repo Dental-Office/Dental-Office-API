@@ -1,5 +1,6 @@
 package com.dentaloffice.services.impl;
 
+import com.dentaloffice.models.Material;
 import com.dentaloffice.repositories.DentalServiceRepository;
 import com.dentaloffice.models.DentalService;
 import com.dentaloffice.services.DentalServiceService;
@@ -29,6 +30,15 @@ public class DentalDentalServiceServiceImpl implements DentalServiceService {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sort).ascending());
 
         return dentalServiceRepository.findByFiltering(filter, pageable);
+    }
+
+    public boolean exists(UUID id){
+        return dentalServiceRepository.existsById(id);
+    }
+
+    @Override
+    public void delete(UUID id) {
+        dentalServiceRepository.deleteById(id);
     }
 
     @Override

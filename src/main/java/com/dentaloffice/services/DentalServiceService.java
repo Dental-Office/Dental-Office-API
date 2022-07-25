@@ -11,5 +11,9 @@ public interface DentalServiceService {
 
     Page<DentalService> findAll(String filter, Integer pageNo, Integer pageSize, String sortKey);
 
+    void delete(UUID id);
+
     DentalService get(UUID id);
+
+    boolean exists(UUID id);
 }

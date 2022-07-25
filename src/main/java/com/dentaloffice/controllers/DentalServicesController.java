@@ -5,8 +5,11 @@ import com.dentaloffice.dto.DentalServiceResponseDTO;
 import com.dentaloffice.models.DentalService;
 import com.dentaloffice.services.DentalServiceService;
 import lombok.AllArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.UUID;
@@ -45,5 +48,22 @@ public class DentalServicesController {
     @GetMapping("{id}")
     public DentalService get(@PathVariable UUID id) {
         return dentalServiceService.get(id);
+    }
+
+    @DeleteMapping("{id}")
+    public void delete(@PathVariable UUID id) {
+        if (!dentalServiceService.exists(id)) {
+            throwNotFoundException(id);
+        }
+
+        try {
+            dentalServiceService.delete(id);
+        } catch (DataIntegrityViolationException exception) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        }
+    }
+
+    private void throwNotFoundException(UUID id) {
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No data with id " + id + " exist");
     }
 }
