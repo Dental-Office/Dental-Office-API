@@ -13,6 +13,8 @@ public interface DentalServiceService {
 
     void delete(UUID id);
 
+    DentalService edit(DentalService editedDentalService);
+
     DentalService get(UUID id);
 
     boolean exists(UUID id);

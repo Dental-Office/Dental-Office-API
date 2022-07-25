@@ -2,7 +2,9 @@ package com.dentaloffice.controllers;
 
 import com.dentaloffice.dto.DentalServiceRequestDTO;
 import com.dentaloffice.dto.DentalServiceResponseDTO;
+import com.dentaloffice.dto.MaterialRequestDTO;
 import com.dentaloffice.models.DentalService;
+import com.dentaloffice.models.Material;
 import com.dentaloffice.services.DentalServiceService;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -61,6 +63,19 @@ public class DentalServicesController {
         } catch (DataIntegrityViolationException exception) {
             throw new ResponseStatusException(HttpStatus.CONFLICT);
         }
+    }
+
+    @PutMapping("{id}")
+    public DentalService edit(@PathVariable UUID id, @Valid @RequestBody DentalServiceRequestDTO dentalServiceRequestDTO) {
+        DentalService dentalServiceToBeSaved = new DentalService();
+        dentalServiceToBeSaved.setId(id);
+        dentalServiceToBeSaved.setServiceName(dentalServiceRequestDTO.getServiceName());
+
+        if (!dentalServiceService.exists(id)) {
+            throwNotFoundException(id);
+        }
+
+        return dentalServiceService.edit(dentalServiceToBeSaved);
     }
 
     private void throwNotFoundException(UUID id) {

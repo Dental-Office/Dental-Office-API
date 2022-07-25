@@ -41,6 +41,12 @@ public class DentalDentalServiceServiceImpl implements DentalServiceService {
         dentalServiceRepository.deleteById(id);
     }
 
+
+    @Override
+    public DentalService edit(DentalService editedDentalService) {
+        return dentalServiceRepository.save(editedDentalService);
+    }
+
     @Override
     public DentalService get(UUID id) {
         return dentalServiceRepository.getById(id);

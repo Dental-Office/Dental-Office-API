@@ -11,6 +11,6 @@ public class DentalServiceRequestDTO {
 
     @NotNull(message = "Service name can not be null!")
     @Size(min=2, max= 25, message = "Service name must be grater than 1 character and not grater than 25 characters!")
-    @Pattern(regexp = "^[a-zA-Z]*", message = "Service name can not be a number!")
+    @Pattern(regexp = "^[a-zA-Z ]*", message = "Service name can not be a number!")
     private String serviceName;
 }
