@@ -4,13 +4,12 @@ import com.dentaloffice.models.Material;
 import com.dentaloffice.repositories.MaterialRepository;
 import com.dentaloffice.services.MaterialService;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -28,7 +27,14 @@ public class MaterialServiceImpl implements MaterialService {
 
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sort).ascending());
 
-        return materialRepository.findByFiltering(filter, filter, pageable);
+        Page<Material> pagedResult = materialRepository.findByFiltering(filter, filter, pageable);
+
+        List<Material> persistedMaterials = pagedResult.getContent();
+        List<Material> materials = persistedMaterials.stream()
+                .map(item -> new Material(item.getId(), item.getMaterialName(), item.getQuantity()))
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(materials, pagedResult.getPageable(), pagedResult.getTotalElements());
     }
 
     public boolean exists(UUID id){
@@ -47,6 +53,8 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Override
     public Material get(UUID id) {
-        return materialRepository.getById(id);
+        Material materialDb = materialRepository.getById(id);
+
+        return new Material(materialDb.getId(), materialDb.getMaterialName(), materialDb.getQuantity());
     }
 }

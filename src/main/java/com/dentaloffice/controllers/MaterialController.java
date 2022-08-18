@@ -28,11 +28,11 @@ public class MaterialController {
                                        @RequestParam(defaultValue = "0") Integer pageNo,
                                        @RequestParam(defaultValue = "10") Integer pageSize,
                                        @RequestParam(name = "sort", defaultValue = "materialName", required = false) String sort) {
-        Page<Material> pagedResult = materialService.findAll(searchTerm, pageNo, pageSize, sort);
+        Page<Material> pagedMaterials = materialService.findAll(searchTerm, pageNo, pageSize, sort);
 
         MaterialResponseDTO response = new MaterialResponseDTO();
-        response.setContent(pagedResult.getContent());
-        response.setTotalPages(pagedResult.getTotalPages());
+        response.setContent(pagedMaterials.getContent());
+        response.setTotalPages(pagedMaterials.getTotalPages());
 
         return response;
     }
