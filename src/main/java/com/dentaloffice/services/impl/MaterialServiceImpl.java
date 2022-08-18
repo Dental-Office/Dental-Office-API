@@ -28,10 +28,10 @@ public class MaterialServiceImpl implements MaterialService {
 
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sort).ascending());
 
-        return materialRepository.findByFiltering(filter, filter, pageable);
+        return materialRepository.findByMaterialNameContainingOrQuantityContaining(filter, filter, pageable);
     }
 
-    public boolean exists(UUID id){
+    public boolean exists(UUID id) {
         return materialRepository.existsById(id);
     }
 

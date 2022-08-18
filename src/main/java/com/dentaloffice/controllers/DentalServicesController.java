@@ -2,9 +2,7 @@ package com.dentaloffice.controllers;
 
 import com.dentaloffice.dto.DentalServiceRequestDTO;
 import com.dentaloffice.dto.DentalServiceResponseDTO;
-import com.dentaloffice.dto.MaterialRequestDTO;
 import com.dentaloffice.models.DentalService;
-import com.dentaloffice.models.Material;
 import com.dentaloffice.services.DentalServiceService;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
