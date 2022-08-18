@@ -1,7 +1,7 @@
 package com.dentaloffice.controllers;
 
 import com.dentaloffice.dto.MaterialRequestDTO;
-import com.dentaloffice.dto.MaterialResponseDTO;
+import com.dentaloffice.dto.PageResponse;
 import com.dentaloffice.models.Material;
 import com.dentaloffice.services.MaterialService;
 import lombok.AllArgsConstructor;
@@ -24,13 +24,13 @@ public class MaterialController {
     private final MaterialService materialService;
 
     @GetMapping
-    public MaterialResponseDTO findAll(@RequestParam(name = "searchTerm", required = false) String searchTerm,
-                                       @RequestParam(defaultValue = "0") Integer pageNo,
-                                       @RequestParam(defaultValue = "10") Integer pageSize,
-                                       @RequestParam(name = "sort", defaultValue = "materialName", required = false) String sort) {
+    public PageResponse<Material> findAll(@RequestParam(name = "searchTerm", required = false) String searchTerm,
+                                @RequestParam(defaultValue = "0") Integer pageNo,
+                                @RequestParam(defaultValue = "10") Integer pageSize,
+                                @RequestParam(name = "sort", defaultValue = "materialName", required = false) String sort) {
         Page<Material> pagedMaterials = materialService.findAll(searchTerm, pageNo, pageSize, sort);
 
-        MaterialResponseDTO response = new MaterialResponseDTO();
+        PageResponse<Material> response = new PageResponse<>();
         response.setContent(pagedMaterials.getContent());
         response.setTotalPages(pagedMaterials.getTotalPages());
 

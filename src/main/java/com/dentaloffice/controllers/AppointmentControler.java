@@ -1,7 +1,7 @@
 package com.dentaloffice.controllers;
 
 import com.dentaloffice.dto.AppointmentRequestDTO;
-import com.dentaloffice.dto.AppointmentResponseDTO;
+import com.dentaloffice.dto.PageResponse;
 import com.dentaloffice.models.Appointment;
 import com.dentaloffice.models.Patient;
 import com.dentaloffice.services.AppointmentService;
@@ -35,13 +35,13 @@ public class AppointmentControler {
     }
 
     @GetMapping
-    public AppointmentResponseDTO findAll(@RequestParam(name="searchTerm", required = false) String searchTerm,
-                                          @RequestParam(defaultValue = "0") Integer pageNo,
-                                          @RequestParam(defaultValue = "10") Integer pageSize,
-                                          @RequestParam(name = "sort", defaultValue = "date", required = false) String sort) {
+    public PageResponse<Appointment> findAll(@RequestParam(name="searchTerm", required = false) String searchTerm,
+                                @RequestParam(defaultValue = "0") Integer pageNo,
+                                @RequestParam(defaultValue = "10") Integer pageSize,
+                                @RequestParam(name = "sort", defaultValue = "date", required = false) String sort) {
         Page<Appointment> pagedResult = appointmentService.findAll(searchTerm, pageNo, pageSize, sort);
 
-        AppointmentResponseDTO response = new AppointmentResponseDTO();
+        PageResponse<Appointment> response = new PageResponse<>();
         response.setContent(pagedResult.getContent());
         response.setTotalPages(pagedResult.getTotalPages());
 

@@ -1,10 +1,8 @@
 package com.dentaloffice.controllers;
 
 import com.dentaloffice.dto.DentalServiceRequestDTO;
-import com.dentaloffice.dto.DentalServiceResponseDTO;
-import com.dentaloffice.dto.MaterialRequestDTO;
+import com.dentaloffice.dto.PageResponse;
 import com.dentaloffice.models.DentalService;
-import com.dentaloffice.models.Material;
 import com.dentaloffice.services.DentalServiceService;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -26,13 +24,13 @@ public class DentalServicesController {
     private final DentalServiceService dentalServiceService;
 
     @GetMapping
-    public DentalServiceResponseDTO findAll(@RequestParam(name = "searchTerm", required = false) String searchTerm,
-                                            @RequestParam(defaultValue = "0") Integer pageNo,
-                                            @RequestParam(defaultValue = "10") Integer pageSize,
-                                            @RequestParam(name = "sort", defaultValue = "serviceName", required = false) String sort) {
+    public PageResponse<DentalService> findAll(@RequestParam(name = "searchTerm", required = false) String searchTerm,
+                                               @RequestParam(defaultValue = "0") Integer pageNo,
+                                               @RequestParam(defaultValue = "10") Integer pageSize,
+                                               @RequestParam(name = "sort", defaultValue = "serviceName", required = false) String sort) {
         Page<DentalService> pagedResult = dentalServiceService.findAll(searchTerm, pageNo, pageSize, sort);
 
-        DentalServiceResponseDTO response = new DentalServiceResponseDTO();
+        PageResponse<DentalService> response = new PageResponse<>();
         response.setContent(pagedResult.getContent());
         response.setTotalPages(pagedResult.getTotalPages());
 

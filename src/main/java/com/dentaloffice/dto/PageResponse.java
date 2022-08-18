@@ -6,9 +6,9 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class MaterialResponseDTO {
+public class PageResponse<T> {
 
-    private List<Material> content;
+    private List<T> content;
 
     private Integer totalPages;
 }
