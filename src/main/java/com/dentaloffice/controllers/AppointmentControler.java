@@ -39,11 +39,11 @@ public class AppointmentControler {
                                 @RequestParam(defaultValue = "0") Integer pageNo,
                                 @RequestParam(defaultValue = "10") Integer pageSize,
                                 @RequestParam(name = "sort", defaultValue = "date", required = false) String sort) {
-        Page<Appointment> pagedResult = appointmentService.findAll(searchTerm, pageNo, pageSize, sort);
+        Page<Appointment> pagedAppointments = appointmentService.findAll(searchTerm, pageNo, pageSize, sort);
 
         PageResponse<Appointment> response = new PageResponse<>();
-        response.setContent(pagedResult.getContent());
-        response.setTotalPages(pagedResult.getTotalPages());
+        response.setContent(pagedAppointments.getContent());
+        response.setTotalPages(pagedAppointments.getTotalPages());
 
         return response;
     }

@@ -11,6 +11,6 @@ import java.util.UUID;
 public interface MaterialRepository extends JpaRepository<Material, UUID> {
 
     @Query("SELECT m FROM Material m WHERE m.materialName LIKE %?1%"
-            + " OR m.quantity LIKE %?1%")
+            + " OR m.quantity LIKE %?2%")
     Page<Material> findByFiltering(String materialName, String quantity, Pageable pageable);
 }

@@ -1,17 +1,15 @@
 package com.dentaloffice.services.impl;
 
 import com.dentaloffice.models.Appointment;
-import com.dentaloffice.models.Patient;
 import com.dentaloffice.repositories.AppointmentRepository;
 import com.dentaloffice.services.AppointmentService;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -29,7 +27,14 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sort).ascending());
 
-        return appointmentRepository.findByFiltering(filter, filter, filter,  pageable);
+        Page<Appointment> pagedResult = appointmentRepository.findByFiltering(filter, filter, filter, pageable);
+
+        List<Appointment> persistedAppointments = pagedResult.getContent();
+        List<Appointment> appointments = persistedAppointments.stream()
+                .map(item -> new Appointment(item.getId(), item.getPatient(), item.getDate(), item.getTime()))
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(appointments, pagedResult.getPageable(), pagedResult.getTotalElements());
     }
 
     public boolean exists(UUID id){
@@ -44,7 +49,9 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public Appointment get(UUID id) {
-        return appointmentRepository.getById(id);
+        Appointment appointmentDb = appointmentRepository.getById(id);
+
+        return new Appointment(appointmentDb.getId(), appointmentDb.getPatient(), appointmentDb.getDate(), appointmentDb.getTime());
     }
 
     @Override

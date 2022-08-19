@@ -1,5 +1,4 @@
 package com.dentaloffice.controllers;
-
 import com.dentaloffice.dto.PageResponse;
 import com.dentaloffice.dto.PatientRequestDTO;
 import com.dentaloffice.models.Patient;
@@ -28,11 +27,11 @@ public class PatientController {
                                 @RequestParam(defaultValue = "0") Integer pageNo,
                                 @RequestParam(defaultValue = "10") Integer pageSize,
                                 @RequestParam(name = "sort", defaultValue = "firstName", required = false) String sort) {
-        Page<Patient> pagedResult = patientService.findAll(searchTerm, pageNo, pageSize, sort);
+        Page<Patient> pagedPatients = patientService.findAll(searchTerm, pageNo, pageSize, sort);
 
         PageResponse<Patient> response = new PageResponse<>();
-        response.setContent(pagedResult.getContent());
-        response.setTotalPages(pagedResult.getTotalPages());
+        response.setContent(pagedPatients.getContent());
+        response.setTotalPages(pagedPatients.getTotalPages());
 
         return response;
     }

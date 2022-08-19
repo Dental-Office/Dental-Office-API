@@ -28,11 +28,11 @@ public class DentalServicesController {
                                                @RequestParam(defaultValue = "0") Integer pageNo,
                                                @RequestParam(defaultValue = "10") Integer pageSize,
                                                @RequestParam(name = "sort", defaultValue = "serviceName", required = false) String sort) {
-        Page<DentalService> pagedResult = dentalServiceService.findAll(searchTerm, pageNo, pageSize, sort);
+        Page<DentalService> pagedDentalServices = dentalServiceService.findAll(searchTerm, pageNo, pageSize, sort);
 
         PageResponse<DentalService> response = new PageResponse<>();
-        response.setContent(pagedResult.getContent());
-        response.setTotalPages(pagedResult.getTotalPages());
+        response.setContent(pagedDentalServices.getContent());
+        response.setTotalPages(pagedDentalServices.getTotalPages());
 
         return response;
     }

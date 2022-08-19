@@ -1,16 +1,14 @@
 package com.dentaloffice.services.impl;
-
 import com.dentaloffice.models.Patient;
 import com.dentaloffice.repositories.PatientRepository;
 import com.dentaloffice.services.PatientService;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -28,7 +26,14 @@ public class PatientServiceImpl implements PatientService {
 
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sort).ascending());
 
-        return patientRepository.findByFiltering(filter, filter, filter, filter, pageable);
+        Page<Patient> pagedResult = patientRepository.findByFiltering(filter, filter, filter, filter, pageable);
+
+        List<Patient> persistedPatients = pagedResult.getContent();
+        List<Patient> patients = persistedPatients.stream()
+                .map(item -> new Patient(item.getId(), item.getFirstName(), item.getLastName(), item.getBirthDate(), item.getPhoneNumber()))
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(patients, pagedResult.getPageable(), pagedResult.getTotalElements());
     }
 
     public boolean exists(UUID id){
@@ -47,6 +52,9 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public Patient get(UUID id) {
-        return patientRepository.getById(id);
+
+        Patient patientDb = patientRepository.getById(id);
+
+        return new Patient(patientDb.getId(), patientDb.getFirstName(), patientDb.getLastName(), patientDb.getBirthDate(), patientDb.getPhoneNumber());
     }
 }

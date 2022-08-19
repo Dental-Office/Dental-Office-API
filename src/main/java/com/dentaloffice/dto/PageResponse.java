@@ -1,6 +1,5 @@
 package com.dentaloffice.dto;
 
-import com.dentaloffice.models.Material;
 import lombok.Data;
 
 import java.util.List;
