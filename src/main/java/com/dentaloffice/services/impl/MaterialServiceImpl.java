@@ -1,6 +1,8 @@
 package com.dentaloffice.services.impl;
 
+import com.dentaloffice.dto.MaterialResponseDTO;
 import com.dentaloffice.models.Material;
+import com.dentaloffice.models.Record;
 import com.dentaloffice.repositories.MaterialRepository;
 import com.dentaloffice.services.MaterialService;
 import lombok.AllArgsConstructor;
@@ -27,17 +29,17 @@ public class MaterialServiceImpl implements MaterialService {
 
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sort).ascending());
 
-        Page<Material> pagedResult = materialRepository.findByFiltering(filter, filter, pageable);
+        Page<Material> pagedResult = materialRepository.findByMaterialNameContainingOrQuantityContaining(filter, filter, pageable);
 
         List<Material> persistedMaterials = pagedResult.getContent();
         List<Material> materials = persistedMaterials.stream()
-                .map(item -> new Material(item.getId(), item.getMaterialName(), item.getQuantity()))
+                .map(item -> new Material(item.getId(), item.getEnrolledRecords(), item.getMaterialName(), item.getQuantity()))
                 .collect(Collectors.toList());
 
         return new PageImpl<>(materials, pagedResult.getPageable(), pagedResult.getTotalElements());
     }
 
-    public boolean exists(UUID id){
+    public boolean exists(UUID id) {
         return materialRepository.existsById(id);
     }
 
@@ -55,6 +57,7 @@ public class MaterialServiceImpl implements MaterialService {
     public Material get(UUID id) {
         Material materialDb = materialRepository.getById(id);
 
-        return new Material(materialDb.getId(), materialDb.getMaterialName(), materialDb.getQuantity());
+        return new Material(materialDb.getId(), materialDb.getEnrolledRecords(), materialDb.getMaterialName(), materialDb.getQuantity());
     }
+
 }

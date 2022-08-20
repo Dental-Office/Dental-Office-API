@@ -1,6 +1,9 @@
 package com.dentaloffice.controllers;
+import com.dentaloffice.dto.MaterialResponseDTO;
 import com.dentaloffice.dto.PageResponse;
 import com.dentaloffice.dto.PatientRequestDTO;
+import com.dentaloffice.dto.PatientResponseDTO;
+import com.dentaloffice.models.Material;
 import com.dentaloffice.models.Patient;
 import com.dentaloffice.services.PatientService;
 import lombok.AllArgsConstructor;
@@ -11,7 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -23,14 +28,20 @@ public class PatientController {
     private final PatientService patientService;
 
     @GetMapping
-    public PageResponse<Patient> findAll(@RequestParam(name = "searchTerm", required = false) String searchTerm,
-                                @RequestParam(defaultValue = "0") Integer pageNo,
-                                @RequestParam(defaultValue = "10") Integer pageSize,
-                                @RequestParam(name = "sort", defaultValue = "firstName", required = false) String sort) {
+    public PageResponse<PatientResponseDTO> findAll(@RequestParam(name = "searchTerm", required = false) String searchTerm,
+                                                    @RequestParam(defaultValue = "0") Integer pageNo,
+                                                    @RequestParam(defaultValue = "10") Integer pageSize,
+                                                    @RequestParam(name = "sort", defaultValue = "firstName", required = false) String sort) {
         Page<Patient> pagedPatients = patientService.findAll(searchTerm, pageNo, pageSize, sort);
 
-        PageResponse<Patient> response = new PageResponse<>();
-        response.setContent(pagedPatients.getContent());
+        List<Patient> patients = pagedPatients.getContent();
+        PageResponse<PatientResponseDTO> response = new PageResponse<>();
+
+        List<PatientResponseDTO> convertedPatients = patients.stream()
+                .map(patient -> new PatientResponseDTO(patient.getId(), patient.getFirstName(), patient.getLastName(), patient.getBirthDate(), patient.getPhoneNumber()))
+                .collect(Collectors.toList());
+
+        response.setContent(convertedPatients);
         response.setTotalPages(pagedPatients.getTotalPages());
 
         return response;

@@ -30,7 +30,7 @@ public class PatientServiceImpl implements PatientService {
 
         List<Patient> persistedPatients = pagedResult.getContent();
         List<Patient> patients = persistedPatients.stream()
-                .map(item -> new Patient(item.getId(), item.getFirstName(), item.getLastName(), item.getBirthDate(), item.getPhoneNumber()))
+                .map(item -> new Patient(item.getId(), item.getFirstName(), item.getLastName(), item.getBirthDate(), item.getPhoneNumber(), item.getRecords()))
                 .collect(Collectors.toList());
 
         return new PageImpl<>(patients, pagedResult.getPageable(), pagedResult.getTotalElements());
@@ -55,6 +55,6 @@ public class PatientServiceImpl implements PatientService {
 
         Patient patientDb = patientRepository.getById(id);
 
-        return new Patient(patientDb.getId(), patientDb.getFirstName(), patientDb.getLastName(), patientDb.getBirthDate(), patientDb.getPhoneNumber());
+        return new Patient(patientDb.getId(), patientDb.getFirstName(), patientDb.getLastName(), patientDb.getBirthDate(), patientDb.getPhoneNumber(), patientDb.getRecords());
     }
 }

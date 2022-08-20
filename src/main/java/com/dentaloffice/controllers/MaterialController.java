@@ -1,9 +1,15 @@
 package com.dentaloffice.controllers;
+
 import com.dentaloffice.dto.MaterialRequestDTO;
+import com.dentaloffice.dto.MaterialResponseDTO;
 import com.dentaloffice.dto.PageResponse;
 import com.dentaloffice.models.Material;
+import com.dentaloffice.models.Record;
+import com.dentaloffice.repositories.MaterialRepository;
+import com.dentaloffice.repositories.RecordRepository;
 import com.dentaloffice.services.MaterialService;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -11,7 +17,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -22,15 +30,26 @@ public class MaterialController {
     public static final String BASE_URL = "/material";
     private final MaterialService materialService;
 
+    @Autowired
+    MaterialRepository materialRepository;
+
+    @Autowired
+    RecordRepository recordRepository;
+
     @GetMapping
-    public PageResponse<Material> findAll(@RequestParam(name = "searchTerm", required = false) String searchTerm,
-                                @RequestParam(defaultValue = "0") Integer pageNo,
-                                @RequestParam(defaultValue = "10") Integer pageSize,
-                                @RequestParam(name = "sort", defaultValue = "materialName", required = false) String sort) {
+    public PageResponse<MaterialResponseDTO> findAll(@RequestParam(name = "searchTerm", required = false) String searchTerm,
+                                                     @RequestParam(defaultValue = "0") Integer pageNo,
+                                                     @RequestParam(defaultValue = "10") Integer pageSize,
+                                                     @RequestParam(name = "sort", defaultValue = "materialName", required = false) String sort) {
         Page<Material> pagedMaterials = materialService.findAll(searchTerm, pageNo, pageSize, sort);
 
-        PageResponse<Material> response = new PageResponse<>();
-        response.setContent(pagedMaterials.getContent());
+        List<Material> materials = pagedMaterials.getContent();
+
+        PageResponse<MaterialResponseDTO> response = new PageResponse<>();
+
+        List<MaterialResponseDTO> convertedMaterials = materials.stream().map(item -> new MaterialResponseDTO(item.getId(), item.getMaterialName(), item.getQuantity())).collect(Collectors.toList());
+
+        response.setContent(convertedMaterials);
         response.setTotalPages(pagedMaterials.getTotalPages());
 
         return response;
@@ -79,5 +98,13 @@ public class MaterialController {
 
     private void throwNotFoundException(UUID id) {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No data with id " + id + " exist");
+    }
+
+    @PutMapping("/{materialId}/records/{recordId}")
+    Material enrolledRecordToMaterial(@PathVariable UUID materialId, @PathVariable UUID recordId) {
+        Material material = materialRepository.findById(materialId).get();
+        Record record = recordRepository.findById(recordId).get();
+        material.enrolledRecord(record);
+        return materialRepository.save(material);
     }
 }

@@ -1,5 +1,6 @@
 package com.dentaloffice.services;
 
+import com.dentaloffice.dto.MaterialResponseDTO;
 import com.dentaloffice.models.Material;
 import org.springframework.data.domain.Page;
 
