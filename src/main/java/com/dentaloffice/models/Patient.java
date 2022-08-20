@@ -3,13 +3,10 @@ package com.dentaloffice.models;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-//import lombok.EqualsAndHashCode;
-
+import lombok.EqualsAndHashCode;
 import javax.persistence.*;
-
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;

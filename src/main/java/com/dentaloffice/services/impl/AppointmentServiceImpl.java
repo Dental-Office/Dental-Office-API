@@ -1,6 +1,7 @@
 package com.dentaloffice.services.impl;
 
 import com.dentaloffice.models.Appointment;
+import com.dentaloffice.models.Patient;
 import com.dentaloffice.repositories.AppointmentRepository;
 import com.dentaloffice.services.AppointmentService;
 import lombok.AllArgsConstructor;
@@ -31,7 +32,11 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         List<Appointment> persistedAppointments = pagedResult.getContent();
         List<Appointment> appointments = persistedAppointments.stream()
-                .map(item -> new Appointment(item.getId(), item.getPatient(), item.getDate(), item.getTime()))
+                .map(item -> {
+                    Patient patient = item.getPatient();
+                    Patient patientCopy = new Patient(patient.getId(), patient.getFirstName(), patient.getLastName(), patient.getBirthDate(), patient.getPhoneNumber(), null);
+                    return new Appointment(item.getId(), patientCopy, item.getDate(), item.getTime());
+                })
                 .collect(Collectors.toList());
 
         return new PageImpl<>(appointments, pagedResult.getPageable(), pagedResult.getTotalElements());

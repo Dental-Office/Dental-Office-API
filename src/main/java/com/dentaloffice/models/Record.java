@@ -24,6 +24,5 @@ public class Record {
     private Patient patient;
 
     @ManyToMany(mappedBy = "enrolledRecords", fetch = FetchType.EAGER)
-//    @EqualsAndHashCode.Exclude
     private Set<Material> materials = new HashSet<>();
 }

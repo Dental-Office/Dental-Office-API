@@ -1,8 +1,6 @@
 package com.dentaloffice.services.impl;
 
-import com.dentaloffice.dto.MaterialResponseDTO;
 import com.dentaloffice.models.Material;
-import com.dentaloffice.models.Record;
 import com.dentaloffice.repositories.MaterialRepository;
 import com.dentaloffice.services.MaterialService;
 import lombok.AllArgsConstructor;

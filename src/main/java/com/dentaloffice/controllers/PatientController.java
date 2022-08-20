@@ -1,9 +1,7 @@
 package com.dentaloffice.controllers;
-import com.dentaloffice.dto.MaterialResponseDTO;
 import com.dentaloffice.dto.PageResponse;
 import com.dentaloffice.dto.PatientRequestDTO;
 import com.dentaloffice.dto.PatientResponseDTO;
-import com.dentaloffice.models.Material;
 import com.dentaloffice.models.Patient;
 import com.dentaloffice.services.PatientService;
 import lombok.AllArgsConstructor;

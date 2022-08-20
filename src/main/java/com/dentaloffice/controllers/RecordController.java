@@ -2,7 +2,6 @@ package com.dentaloffice.controllers;
 
 import com.dentaloffice.dto.PageResponse;
 import com.dentaloffice.dto.RecordRequestDTO;
-import com.dentaloffice.dto.RecordResponseDTO;
 import com.dentaloffice.models.Patient;
 import com.dentaloffice.models.Record;
 import com.dentaloffice.repositories.PatientRepository;
@@ -12,7 +11,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
