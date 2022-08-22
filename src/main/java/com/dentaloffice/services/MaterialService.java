@@ -18,4 +18,6 @@ public interface MaterialService {
     Material get(UUID id);
 
     boolean exists(UUID id);
+
+    void addRecord(UUID materialId, UUID recordId) throws Exception;
 }

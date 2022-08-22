@@ -41,10 +41,8 @@ public class RecordServiceImpl implements RecordService {
                 .map(item -> {
                     Patient patient = item.getPatient();
                     Patient patientCopy = new Patient(patient.getId(), patient.getFirstName(), patient.getLastName(), patient.getBirthDate(), patient.getPhoneNumber(), null);
-                    Set<Material> material = item.getMaterials();
-                    Set<Material> materials = material.stream().map(itemM -> {
-                        return new Material(itemM.getId(), null, itemM.getMaterialName(), itemM.getQuantity());
-                    }).collect(Collectors.toSet());
+                    List<Material> material = item.getMaterials();
+                    List<Material> materials = material.stream().map(itemM -> new Material(itemM.getId(), null, itemM.getMaterialName(), itemM.getQuantity())).collect(Collectors.toList());
                     return new Record(item.getId(), patientCopy, materials);
                 })
                 .collect(Collectors.toList());

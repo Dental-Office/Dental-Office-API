@@ -5,11 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import lombok.EqualsAndHashCode;
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Data
@@ -30,6 +27,5 @@ public class Patient {
     private String phoneNumber;
 
     @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-//    @EqualsAndHashCode.Exclude
-    private Set<Record> records = new HashSet<>();
+    private List<Record> records = new ArrayList<>();
 }

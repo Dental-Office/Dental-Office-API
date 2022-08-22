@@ -26,7 +26,7 @@ public class PatientServiceImpl implements PatientService {
 
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sort).ascending());
 
-        Page<Patient> pagedResult = patientRepository.findByFiltering(filter, filter, filter, filter, pageable);
+        Page<Patient> pagedResult = patientRepository.findByFiltering(filter, filter, pageable);
 
         List<Patient> persistedPatients = pagedResult.getContent();
         List<Patient> patients = persistedPatients.stream()

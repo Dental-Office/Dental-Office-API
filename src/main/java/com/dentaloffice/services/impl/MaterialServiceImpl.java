@@ -1,11 +1,14 @@
 package com.dentaloffice.services.impl;
 
 import com.dentaloffice.models.Material;
+import com.dentaloffice.models.Record;
 import com.dentaloffice.repositories.MaterialRepository;
+import com.dentaloffice.repositories.RecordRepository;
 import com.dentaloffice.services.MaterialService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -16,6 +19,7 @@ import java.util.stream.Collectors;
 public class MaterialServiceImpl implements MaterialService {
 
     private final MaterialRepository materialRepository;
+    private final RecordRepository recordRepository;
 
     @Override
     public Material save(Material material) {
@@ -56,6 +60,20 @@ public class MaterialServiceImpl implements MaterialService {
         Material materialDb = materialRepository.getById(id);
 
         return new Material(materialDb.getId(), materialDb.getEnrolledRecords(), materialDb.getMaterialName(), materialDb.getQuantity());
+    }
+
+    @Override
+    @Transactional
+    public void addRecord(UUID materialId, UUID recordId) throws Exception {
+        Material material = materialRepository.getById(materialId);
+        List<Record> enrolledRecords = material.getEnrolledRecords();
+        Record record = recordRepository.getById(recordId);
+
+        if (recordRepository.findByIdAndMaterialsId(recordId, materialId).isEmpty()) {
+            enrolledRecords.add(record);
+        } else {
+            throw new Exception();
+        }
     }
 
 }

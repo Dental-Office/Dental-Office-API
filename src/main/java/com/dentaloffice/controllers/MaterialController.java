@@ -4,15 +4,12 @@ import com.dentaloffice.dto.MaterialRequestDTO;
 import com.dentaloffice.dto.MaterialResponseDTO;
 import com.dentaloffice.dto.PageResponse;
 import com.dentaloffice.models.Material;
-import com.dentaloffice.models.Record;
-import com.dentaloffice.repositories.MaterialRepository;
-import com.dentaloffice.repositories.RecordRepository;
 import com.dentaloffice.services.MaterialService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -29,12 +26,6 @@ public class MaterialController {
 
     public static final String BASE_URL = "/material";
     private final MaterialService materialService;
-
-    @Autowired
-    MaterialRepository materialRepository;
-
-    @Autowired
-    RecordRepository recordRepository;
 
     @GetMapping
     public PageResponse<MaterialResponseDTO> findAll(@RequestParam(name = "searchTerm", required = false) String searchTerm,
@@ -101,10 +92,13 @@ public class MaterialController {
     }
 
     @PutMapping("/{materialId}/records/{recordId}")
-    Material enrolledRecordToMaterial(@PathVariable UUID materialId, @PathVariable UUID recordId) {
-        Material material = materialRepository.findById(materialId).get();
-        Record record = recordRepository.findById(recordId).get();
-        material.enrolledRecord(record);
-        return materialRepository.save(material);
+    ResponseEntity<Material> addRecord(@PathVariable UUID materialId, @PathVariable UUID recordId) {
+
+        try {
+            materialService.addRecord(materialId, recordId);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }

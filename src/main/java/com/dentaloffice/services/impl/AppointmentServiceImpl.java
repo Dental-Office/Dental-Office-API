@@ -28,7 +28,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sort).ascending());
 
-        Page<Appointment> pagedResult = appointmentRepository.findByFiltering(filter, filter, filter, pageable);
+        Page<Appointment> pagedResult = appointmentRepository.findByPatientFirstNameContainingOrPatientLastNameContaining(filter, filter, pageable);
 
         List<Appointment> persistedAppointments = pagedResult.getContent();
         List<Appointment> appointments = persistedAppointments.stream()
