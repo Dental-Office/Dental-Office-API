@@ -3,6 +3,8 @@ package com.dentaloffice.models;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.*;

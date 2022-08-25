@@ -2,6 +2,7 @@ package com.dentaloffice.controllers;
 
 import com.dentaloffice.dto.PageResponse;
 import com.dentaloffice.dto.RecordRequestDTO;
+import com.dentaloffice.models.Material;
 import com.dentaloffice.models.Patient;
 import com.dentaloffice.models.Record;
 import com.dentaloffice.repositories.PatientRepository;
@@ -11,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -37,6 +39,8 @@ public class RecordController {
         Record recordToBeSaved = new Record();
         Patient patient = new Patient();
         patient.setId(UUID.fromString(record.getPatientId()));
+
+
         recordToBeSaved.setPatient(patient);
 
         return recordService.save(recordToBeSaved);
@@ -57,6 +61,7 @@ public class RecordController {
     }
 
     @GetMapping("{id}")
+    @Transactional
     public Record get(@PathVariable UUID id) {
         return recordService.get(id);
     }

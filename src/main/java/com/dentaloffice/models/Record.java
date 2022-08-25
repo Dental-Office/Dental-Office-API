@@ -23,7 +23,10 @@ public class Record {
 
     @ManyToMany(
             mappedBy = "enrolledRecords",
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE},
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            },
             fetch = FetchType.EAGER)
     private List<Material> materials = new ArrayList<>();
 }

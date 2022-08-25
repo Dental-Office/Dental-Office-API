@@ -46,8 +46,22 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
     @Override
+    @Transactional
     public void delete(UUID id) {
-        materialRepository.deleteById(id);
+        Material material = materialRepository.getById(id);
+        material.getEnrolledRecords().forEach(record -> {
+                    for (int i = 0; i < record.getMaterials().size(); i++) {
+                        if (record.getMaterials().get(i).getId().equals(id)) {
+                            record.getMaterials().remove(i);
+                        }
+                    }
+                }
+        );
+
+        material.getEnrolledRecords().clear();
+
+        materialRepository.delete(material);
+
     }
 
     @Override

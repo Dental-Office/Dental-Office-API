@@ -10,6 +10,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -69,6 +70,7 @@ public class MaterialController {
     }
 
     @GetMapping("{id}")
+    @Transactional
     public Material get(@PathVariable UUID id) {
         return materialService.get(id);
     }

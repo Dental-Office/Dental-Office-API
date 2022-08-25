@@ -8,6 +8,7 @@ import com.dentaloffice.services.AppointmentService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -57,6 +58,7 @@ public class AppointmentControler {
     }
 
     @GetMapping("{id}")
+    @Transactional
     public Appointment get(@PathVariable UUID id) {
         return appointmentService.get(id);
     }
@@ -64,9 +66,14 @@ public class AppointmentControler {
     @PutMapping("{id}")
     public Appointment edit(@PathVariable UUID id, @Valid @RequestBody AppointmentRequestDTO appointment) {
         Appointment appointmentToBeSaved = new Appointment();
+
+        appointmentToBeSaved.setId(id);
+
         Patient patient = new Patient();
         patient.setId(appointment.getPatientId());
+
         appointmentToBeSaved.setPatient(patient);
+
         appointmentToBeSaved.setDate(appointment.getDate());
         appointmentToBeSaved.setTime(appointment.getTime());
 

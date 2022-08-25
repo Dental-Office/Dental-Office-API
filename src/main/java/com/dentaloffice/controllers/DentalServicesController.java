@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -46,6 +47,7 @@ public class DentalServicesController {
     }
 
     @GetMapping("{id}")
+    @Transactional
     public DentalService get(@PathVariable UUID id) {
         return dentalServiceService.get(id);
     }
