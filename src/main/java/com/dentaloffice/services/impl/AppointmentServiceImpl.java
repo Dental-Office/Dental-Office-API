@@ -56,14 +56,20 @@ public class AppointmentServiceImpl implements AppointmentService {
     public Appointment get(UUID id) {
         Appointment appointmentDb = appointmentRepository.getById(id);
 
-        return new Appointment(appointmentDb.getId(), appointmentDb.getPatient(), appointmentDb.getDate(), appointmentDb.getTime());
+        Patient patient = appointmentDb.getPatient();
+        Patient patientCopy = new Patient(patient.getId(), patient.getFirstName(), patient.getLastName(), patient.getBirthDate(), patient.getPhoneNumber(), null);
+
+        return new Appointment(appointmentDb.getId(), patientCopy, appointmentDb.getDate(), appointmentDb.getTime());
     }
 
     @Override
     public Appointment edit(Appointment editedAppointment) {
         Appointment savedAppointment = appointmentRepository.save(editedAppointment);
 
-        return new Appointment(savedAppointment.getId(), null, savedAppointment.getDate(), savedAppointment.getTime());
+        Patient patient = savedAppointment.getPatient();
+        Patient patientCopy = new Patient(patient.getId(), patient.getFirstName(), patient.getLastName(), patient.getBirthDate(), patient.getPhoneNumber(), null);
+
+        return new Appointment(savedAppointment.getId(), patientCopy, savedAppointment.getDate(), savedAppointment.getTime());
     }
 
 }
