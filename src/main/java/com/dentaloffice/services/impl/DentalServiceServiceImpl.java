@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-public class DentalDentalServiceServiceImpl implements DentalServiceService {
+public class DentalServiceServiceImpl implements DentalServiceService {
 
     private final DentalServiceRepository dentalServiceRepository;
 
@@ -27,7 +27,7 @@ public class DentalDentalServiceServiceImpl implements DentalServiceService {
 
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sort).ascending());
 
-        Page<DentalService> pagedResult = dentalServiceRepository.findByFiltering(filter, pageable);
+        Page<DentalService> pagedResult = dentalServiceRepository.findByServiceNameContainingIgnoreCase(filter, pageable);
 
         List<DentalService> persistedDentalServices = pagedResult.getContent();
         List<DentalService> dentalServices = persistedDentalServices.stream()

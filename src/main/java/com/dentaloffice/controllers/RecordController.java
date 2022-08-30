@@ -2,7 +2,6 @@ package com.dentaloffice.controllers;
 
 import com.dentaloffice.dto.PageResponse;
 import com.dentaloffice.dto.RecordRequestDTO;
-import com.dentaloffice.models.Material;
 import com.dentaloffice.models.Patient;
 import com.dentaloffice.models.Record;
 import com.dentaloffice.repositories.PatientRepository;

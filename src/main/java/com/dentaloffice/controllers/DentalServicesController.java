@@ -1,6 +1,7 @@
 package com.dentaloffice.controllers;
 
 import com.dentaloffice.dto.DentalServiceRequestDTO;
+import com.dentaloffice.dto.DentalServiceResponseDTO;
 import com.dentaloffice.dto.PageResponse;
 import com.dentaloffice.models.DentalService;
 import com.dentaloffice.services.DentalServiceService;
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -25,14 +28,21 @@ public class DentalServicesController {
     private final DentalServiceService dentalServiceService;
 
     @GetMapping
-    public PageResponse<DentalService> findAll(@RequestParam(name = "searchTerm", required = false) String searchTerm,
+    public PageResponse<DentalServiceResponseDTO> findAll(@RequestParam(name = "searchTerm", required = false) String searchTerm,
                                                @RequestParam(defaultValue = "0") Integer pageNo,
                                                @RequestParam(defaultValue = "10") Integer pageSize,
                                                @RequestParam(name = "sort", defaultValue = "serviceName", required = false) String sort) {
         Page<DentalService> pagedDentalServices = dentalServiceService.findAll(searchTerm, pageNo, pageSize, sort);
 
-        PageResponse<DentalService> response = new PageResponse<>();
-        response.setContent(pagedDentalServices.getContent());
+        List<DentalService> dentalServices = pagedDentalServices.getContent();
+        PageResponse<DentalServiceResponseDTO> response= new PageResponse<>();
+
+        List<DentalServiceResponseDTO> convertedDentalServices = dentalServices.stream()
+                .map(dentalService -> new DentalServiceResponseDTO(dentalService.getId(), dentalService.getServiceName()))
+                .collect(Collectors.toList());
+
+
+        response.setContent(convertedDentalServices);
         response.setTotalPages(pagedDentalServices.getTotalPages());
 
         return response;
