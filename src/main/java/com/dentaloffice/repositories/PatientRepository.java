@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public interface PatientRepository extends JpaRepository<Patient, UUID> {
 
-    @Query("SELECT p FROM Patient p WHERE p.firstName LIKE %?1%"
-            + " OR p.lastName LIKE %?1%")
+    @Query("SELECT p FROM Patient p WHERE LOWER(p.firstName) LIKE %?1%"
+            + " OR LOWER(p.lastName) LIKE %?1%")
     Page<Patient> findByFiltering(String firstName, String lastName, Pageable pageable);
 }

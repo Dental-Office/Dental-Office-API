@@ -31,7 +31,7 @@ public class MaterialServiceImpl implements MaterialService {
 
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sort).ascending());
 
-        Page<Material> pagedResult = materialRepository.findByMaterialNameContainingOrQuantityContaining(filter, filter, pageable);
+        Page<Material> pagedResult = materialRepository.findByMaterialNameContainingIgnoreCaseOrQuantityContaining(filter, filter, pageable);
 
         List<Material> persistedMaterials = pagedResult.getContent();
         List<Material> materials = persistedMaterials.stream()

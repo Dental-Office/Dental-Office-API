@@ -9,5 +9,5 @@ import java.util.UUID;
 
 public interface MaterialRepository extends JpaRepository<Material, UUID> {
 
-    Page<Material> findByMaterialNameContainingOrQuantityContaining(String materialName, String quantity, Pageable pageable);
+    Page<Material> findByMaterialNameContainingIgnoreCaseOrQuantityContaining(String materialName, String quantity, Pageable pageable);
 }

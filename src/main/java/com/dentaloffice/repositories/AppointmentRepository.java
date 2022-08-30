@@ -9,6 +9,6 @@ import java.util.UUID;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, UUID> {
 
-    Page<Appointment> findByPatientFirstNameContainingOrPatientLastNameContaining(String firstName, String lastName, Pageable pageable);
+    Page<Appointment> findByPatientFirstNameContainingIgnoreCaseOrPatientLastNameContainingIgnoreCase(String firstName, String lastName, Pageable pageable);
 
 }

@@ -10,6 +10,6 @@ import java.util.UUID;
 
 public interface DentalServiceRepository extends JpaRepository<DentalService, UUID> {
 
-    @Query("SELECT s FROM DentalService s WHERE s.serviceName LIKE %?1%")
+    @Query("SELECT s FROM DentalService s WHERE LOWER(s.serviceName) LIKE %?1%")
     Page<DentalService> findByFiltering(String serviceName, Pageable pageable);
 }
