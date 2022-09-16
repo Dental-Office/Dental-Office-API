@@ -2,6 +2,7 @@ package com.dentaloffice.controllers;
 
 import com.dentaloffice.dto.PageResponse;
 import com.dentaloffice.dto.RecordRequestDTO;
+import com.dentaloffice.models.Material;
 import com.dentaloffice.models.Patient;
 import com.dentaloffice.models.Record;
 import com.dentaloffice.repositories.PatientRepository;
@@ -39,7 +40,6 @@ public class RecordController {
         Patient patient = new Patient();
         patient.setId(UUID.fromString(record.getPatientId()));
 
-
         recordToBeSaved.setPatient(patient);
 
         return recordService.save(recordToBeSaved);
@@ -65,29 +65,36 @@ public class RecordController {
         return recordService.get(id);
     }
 
-    @PutMapping("{id}")
-    public Record edit(@PathVariable UUID id, @Valid @RequestBody RecordRequestDTO record) {
-        Record recordToBeSaved = new Record();
-        Patient patient = new Patient();
-        patient.setId(UUID.fromString(record.getPatientId()));
-        recordToBeSaved.setPatient(patient);
-
-        if (!recordService.exists(id)) {
-            throwNotFoundException(id);
-        }
-
-        return recordService.edit(recordToBeSaved);
-    }
+//    @PutMapping("{id}")
+//    public Record edit(@PathVariable UUID id, @Valid @RequestBody RecordRequestDTO record) {
+//        Record recordToBeSaved = new Record();
+//        Patient patient = new Patient();
+//        patient.setId(UUID.fromString(record.getPatientId()));
+//        recordToBeSaved.setPatient(patient);
+//
+//        if (!recordService.exists(id)) {
+//            throwNotFoundException(id);
+//        }
+//
+//        return recordService.edit(recordToBeSaved);
+//    }
 
     private void throwNotFoundException(UUID id) {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No data with id " + id + " exist");
     }
 
 
-    @PutMapping("/{recordId}/patient/{patientId}")Record assignPatientToRecord(@PathVariable UUID recordId, @PathVariable UUID patientId){
-        Record record = recordRepository.findById(recordId).get();
-        Patient patient = patientRepository.findById(patientId).get();
-        record.setPatient(patient);
-        return recordRepository.save(record);
+    @PutMapping("/{recordId}/patient/{patientId}")Record assignPatientToRecord(@PathVariable UUID recordId, @Valid @RequestBody RecordRequestDTO record){
+        Record recordToBeSaved = new Record();
+        Patient patient = new Patient();
+        patient.setId(UUID.fromString(record.getPatientId()));
+
+        recordToBeSaved.setPatient(patient);
+
+        if (!recordService.exists(recordId)) {
+            throwNotFoundException(recordId);
+        }
+
+        return recordService.edit(recordToBeSaved);
     }
 }

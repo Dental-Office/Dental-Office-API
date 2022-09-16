@@ -3,6 +3,7 @@ package com.dentaloffice.services.impl;
 import com.dentaloffice.models.Material;
 import com.dentaloffice.models.Patient;
 import com.dentaloffice.models.Record;
+import com.dentaloffice.repositories.PatientRepository;
 import com.dentaloffice.repositories.RecordRepository;
 
 import com.dentaloffice.services.RecordService;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -22,10 +24,17 @@ import java.util.stream.Collectors;
 public class RecordServiceImpl implements RecordService {
 
     private final RecordRepository recordRepository;
+    private final PatientRepository patientRepository;
 
     @Override
+    @Transactional
     public Record save(Record record) {
-        return recordRepository.save(record);
+        Patient existingPatient = patientRepository.getById(record.getPatient().getId());
+        record.setPatient(existingPatient);
+
+        Record savedRecord = recordRepository.save(record);
+
+        return new Record(savedRecord.getId(), null, null);
     }
 
     @Override
@@ -61,5 +70,13 @@ public class RecordServiceImpl implements RecordService {
     @Override
     public Record edit(Record editedRecord) {
         return recordRepository.save(editedRecord);
+    }
+
+    @Override
+    public Record assignPatientToRecord(UUID recordId, UUID patientId){
+        Record record = recordRepository.findById(recordId).get();
+        Patient patient = patientRepository.findById(patientId).get();
+        record.setPatient(patient);
+        return recordRepository.save(record);
     }
 }

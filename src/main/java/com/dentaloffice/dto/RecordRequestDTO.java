@@ -10,4 +10,7 @@ public class RecordRequestDTO {
     @NotNull(message = "Patient id can not be null!")
     private String patientId;
 
+//    @NotNull(message = "Material id can not be null!")
+//    private String materialId;
+
 }

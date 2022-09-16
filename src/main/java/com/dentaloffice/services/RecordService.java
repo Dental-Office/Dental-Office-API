@@ -16,4 +16,6 @@ public interface RecordService {
     Record get(UUID id);
 
     Record edit(Record editedRecord);
+
+    Record assignPatientToRecord(UUID recordId, UUID patientId);
 }
