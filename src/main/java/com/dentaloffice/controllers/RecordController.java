@@ -1,5 +1,6 @@
 package com.dentaloffice.controllers;
 
+import com.dentaloffice.dto.MaterialRequestDTO;
 import com.dentaloffice.dto.PageResponse;
 import com.dentaloffice.dto.RecordRequestDTO;
 import com.dentaloffice.models.Material;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -36,13 +39,9 @@ public class RecordController {
 
     @PostMapping
     public Record save(@Valid @RequestBody RecordRequestDTO record) {
-        Record recordToBeSaved = new Record();
-        Patient patient = new Patient();
-        patient.setId(UUID.fromString(record.getPatientId()));
+        UUID patientId = UUID.fromString(record.getPatientId());
 
-        recordToBeSaved.setPatient(patient);
-
-        return recordService.save(recordToBeSaved);
+        return recordService.save(patientId, record.getMaterialIds());
     }
 
     @GetMapping

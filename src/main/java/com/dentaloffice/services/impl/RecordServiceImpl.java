@@ -3,6 +3,7 @@ package com.dentaloffice.services.impl;
 import com.dentaloffice.models.Material;
 import com.dentaloffice.models.Patient;
 import com.dentaloffice.models.Record;
+import com.dentaloffice.repositories.MaterialRepository;
 import com.dentaloffice.repositories.PatientRepository;
 import com.dentaloffice.repositories.RecordRepository;
 
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -25,16 +27,31 @@ public class RecordServiceImpl implements RecordService {
 
     private final RecordRepository recordRepository;
     private final PatientRepository patientRepository;
+    private final MaterialRepository materialRepository;
 
     @Override
     @Transactional
-    public Record save(Record record) {
-        Patient existingPatient = patientRepository.getById(record.getPatient().getId());
+    public Record save(UUID patientId, List<UUID> materialIds) {
+        Patient existingPatient = patientRepository.getById(patientId);
+
+        Record record = new Record();
         record.setPatient(existingPatient);
+        
+        for(int i=0; i<materialIds.size(); i++){
+            Material existingMaterial = materialRepository.getById(materialIds.get(i));
+            existingMaterial.getEnrolledRecords().add(record);
+            record.getMaterials().add(existingMaterial);
+        }
 
         Record savedRecord = recordRepository.save(record);
 
-        return new Record(savedRecord.getId(), null, null);
+        Patient savedPatient = savedRecord.getPatient();
+        Patient savedPatientCopy = new Patient(savedPatient.getId(), savedPatient.getFirstName(), savedPatient.getLastName(), savedPatient.getBirthDate(), savedPatient.getPhoneNumber(), null);
+
+        List<Material> savedMaterials = savedRecord.getMaterials();
+        List<Material> savedMaterialsCopy = savedMaterials.stream().map(item -> new Material(item.getId(), null, item.getMaterialName(), item.getQuantity())).collect(Collectors.toList());
+
+        return new Record(savedRecord.getId(), savedPatientCopy, savedMaterialsCopy);
     }
 
     @Override

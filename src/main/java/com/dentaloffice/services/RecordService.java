@@ -3,11 +3,12 @@ package com.dentaloffice.services;
 import com.dentaloffice.models.Record;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface RecordService {
 
-    Record save(Record record);
+    Record save(UUID patientId, List<UUID> materialIds);
 
     Page<Record> findAll(String searchTerm, Integer pageNo, Integer pageSize);
 
