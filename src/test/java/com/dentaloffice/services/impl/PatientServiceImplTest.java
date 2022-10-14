@@ -2,6 +2,7 @@ package com.dentaloffice.services.impl;
 
 import com.dentaloffice.models.Patient;
 import com.dentaloffice.repositories.PatientRepository;
+import org.assertj.core.api.Assert;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -11,9 +12,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.isNull;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class PatientServiceImplTest {
@@ -66,6 +65,15 @@ class PatientServiceImplTest {
 
 //        verify(patientRepository).findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase();
 
+    }
+
+    @Test
+    void shouldDelete() {
+
+        UUID id = UUID.fromString("eefcbdd4-3cc3-4b93-822c-6226305677cd");
+        
+        patientService.delete(id);
+        verify(patientRepository).deleteById(id);
     }
 
     @Nested
