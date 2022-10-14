@@ -71,24 +71,23 @@ class PatientServiceImplTest {
 
 
     @Test
-    @Disabled
-    void exists() {
+    void shouldExist() {
 
         UUID id = UUID.fromString("eefcbdd4-3cc3-4b93-822c-6226305677cd");
-        Patient patient = new Patient(
+        Patient createdPatient = new Patient(
                 id, "Dragana",
                 "Spasojevic",
                 "04.11.1989.",
                 "017673831708",
                 null);
 
-        patientService.save(patient);
+        when(patientRepository.existsById(createdPatient.getId())).thenReturn(true);
 
-        UUID expectedId = patient.getId();
+        boolean hasPatientWithId = patientService.exists(createdPatient.getId());
 
-        boolean expected = patientService.exists(expectedId);
+        verify(patientRepository).existsById(createdPatient.getId());
 
-        assertThat(expected).isTrue();
+        assertThat(hasPatientWithId).isTrue();
 
     }
 }
