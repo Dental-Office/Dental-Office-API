@@ -30,4 +30,5 @@ public class Patient {
 
     @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Record> records = new ArrayList<>();
+
 }
