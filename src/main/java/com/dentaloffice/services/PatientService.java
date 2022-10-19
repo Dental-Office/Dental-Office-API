@@ -3,6 +3,7 @@ package com.dentaloffice.services;
 import com.dentaloffice.models.Patient;
 import org.springframework.data.domain.Page;
 
+import java.io.IOException;
 import java.util.UUID;
 
 public interface PatientService {

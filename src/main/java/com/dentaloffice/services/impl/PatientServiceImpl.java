@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -49,7 +51,11 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     public Patient edit(Patient patientToBeEdited) {
-        return patientRepository.save(patientToBeEdited);
+        if (patientToBeEdited.getId() != null) {
+            return patientRepository.save(patientToBeEdited);
+        }
+
+        throw new IllegalArgumentException("Patient id is null!");
     }
 
     @Override

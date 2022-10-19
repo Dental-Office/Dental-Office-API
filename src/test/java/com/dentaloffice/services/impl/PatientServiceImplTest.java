@@ -7,9 +7,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -21,7 +24,7 @@ class PatientServiceImplTest {
     private PatientServiceImpl patientService;
 
     @BeforeEach
-    public void setup(){
+    public void setup() {
         patientService = new PatientServiceImpl(patientRepository);
     }
 
@@ -60,7 +63,7 @@ class PatientServiceImplTest {
     @Disabled
     void schouldFindAll() {
 
-        patientService.findAll("Dragana", 1,10, "Dragana" );
+        patientService.findAll("Dragana", 1, 10, "Dragana");
 
 //        verify(patientRepository).findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase();
 
@@ -70,7 +73,7 @@ class PatientServiceImplTest {
     void shouldDelete() {
 
         UUID id = UUID.fromString("eefcbdd4-3cc3-4b93-822c-6226305677cd");
-        
+
         patientService.delete(id);
         verify(patientRepository).deleteById(id);
     }
@@ -138,6 +141,15 @@ class PatientServiceImplTest {
         assertThat(result).isEqualTo(editedPatient);
     }
 
+    @Test
+    void shouldThrowExceptionWhenPatientIdIsNull() {
+        Patient patientToBeEdited = new Patient();
+        patientToBeEdited.setId(null);
+
+        assertThrows(IllegalArgumentException.class, () -> patientService.edit(patientToBeEdited));
+
+        verify(patientRepository, times(0)).save(any(Patient.class));
+    }
 
 
 //    @Test
@@ -160,7 +172,6 @@ class PatientServiceImplTest {
 //
 //        assertThat(result.getId()).isEqualTo(createdPatient.getId());
 //    }
-
 
 
 }
