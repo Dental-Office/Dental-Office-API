@@ -2,7 +2,6 @@ package com.dentaloffice.services.impl;
 
 import com.dentaloffice.models.Patient;
 import com.dentaloffice.repositories.PatientRepository;
-import org.assertj.core.api.Assert;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -110,4 +109,58 @@ class PatientServiceImplTest {
             assertThat(result).isFalse();
         }
     }
+
+    @Test
+    void shouldEdit() {
+
+        UUID id = UUID.fromString("eefcbdd4-3cc3-4b93-822c-6226305677cd");
+        Patient patientToBeEdited = new Patient(
+                id, "Dragana",
+                "Spasojevic",
+                "04.11.1989.",
+                "017673831708",
+                null);
+
+        Patient editedPatient = new Patient();
+        editedPatient.setId(patientToBeEdited.getId());
+        editedPatient.setFirstName("Dragana");
+        editedPatient.setLastName("Blazanovic");
+        editedPatient.setBirthDate("04.11.1989.");
+        editedPatient.setPhoneNumber("17673831708");
+        editedPatient.setRecords(null);
+
+        when(patientRepository.save(any(Patient.class))).thenReturn(editedPatient);
+
+        Patient result = patientService.edit(patientToBeEdited);
+
+        verify(patientRepository).save(patientToBeEdited);
+
+        assertThat(result).isEqualTo(editedPatient);
+    }
+
+
+
+//    @Test
+//    void shouldGet() {
+//
+//        UUID id = UUID.fromString("eefcbdd4-3cc3-4b93-822c-6226305677cd");
+//        Patient createdPatient = new Patient(
+//                id,
+//                "Dragana",
+//                "Spasojevic",
+//                "04.11.1989.",
+//                "017673831708",
+//                null);
+//
+//        when(patientRepository.getById(any(UUID.class))).thenReturn(createdPatient);
+//
+//        Patient result = patientService.get(id);
+//
+//        verify(patientRepository).getById(id);
+//
+//        assertThat(result.getId()).isEqualTo(createdPatient.getId());
+//    }
+
+
+
 }

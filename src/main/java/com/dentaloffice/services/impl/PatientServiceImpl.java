@@ -37,6 +37,7 @@ public class PatientServiceImpl implements PatientService {
         return new PageImpl<>(patients, pagedResult.getPageable(), pagedResult.getTotalElements());
     }
 
+    @Override
     public boolean exists(UUID id){
         return patientRepository.existsById(id);
     }
@@ -47,8 +48,8 @@ public class PatientServiceImpl implements PatientService {
     }
 
     @Override
-    public Patient edit(Patient editedPatient) {
-        return patientRepository.save(editedPatient);
+    public Patient edit(Patient patientToBeEdited) {
+        return patientRepository.save(patientToBeEdited);
     }
 
     @Override
